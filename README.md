@@ -32,6 +32,18 @@ src/
 - `src/lib/slots.js` : brancher un vrai agenda.
 - Mentions légales / confidentialité : compléter et faire valider ; domaine dans `public/sitemap.xml` et `robots.txt`.
 
-## SEO / performance
-Meta et JSON-LD (`AutoRepair`) dans `index.html`, titre/description par page, code splitting, JS d'entrée ≈ 25 ko gzip.
-SPA : pour un SEO maximal, prévoir du pré-rendu (ex. Next.js) et un serveur avec fallback vers `index.html`.
+## SEO / pré-rendu
+`npm run build` fait trois choses : build client, build SSR (`src/entry-server.jsx`), puis `scripts/prerender.mjs`
+qui écrit un HTML complet par page dans `dist/` (accueil, pages, **une page par véhicule**, `404.html`).
+Le navigateur hydrate ensuite la page (`hydrateRoot`) : l'expérience reste celle d'une app React.
+
+- Chaque page a son `<title>`, sa description, son `canonical` et ses balises Open Graph (fournis par `useMeta`).
+- `sitemap.xml` et `robots.txt` sont générés à chaque build. Définissez votre domaine :
+  `SITE_URL=https://votre-domaine.fr npm run build`
+- Nouvelle page ou nouveau véhicule : ajoutez la route dans `src/App.jsx` ; les véhicules de `data/vehicles.js` et la liste
+  `routes` de `entry-server.jsx` sont pré-rendus automatiquement (pages fixes à y ajouter à la main).
+- Hébergement : n'importe quel hébergeur statique (Netlify, Vercel, Cloudflare Pages, GitHub Pages, OVH…) qui sert
+  `dossier/index.html` et `404.html`. Aucun serveur Node requis.
+- Règle à respecter dans les composants : pas de valeur dépendant de `Date`/`Math.random`/`window` au premier rendu
+  (sinon erreur d'hydratation) ; arrondir les calculs flottants affichés dans le SVG.
+- `npm run dev` reste un rendu 100 % client (sans pré-rendu).

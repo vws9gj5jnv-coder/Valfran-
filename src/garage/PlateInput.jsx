@@ -16,7 +16,7 @@ export default function PlateInput({ value, onChange, onSubmit, invalid, disable
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
             {Array.from({ length: 12 }).map((_, i) => {
               const a = (i / 12) * Math.PI * 2;
-              return <circle key={i} cx={12 + 8.5 * Math.sin(a)} cy={12 - 8.5 * Math.cos(a)} r="1.3" fill="#fc0" />;
+              return <circle key={i} cx={(12 + 8.5 * Math.sin(a)).toFixed(2)} cy={(12 - 8.5 * Math.cos(a)).toFixed(2)} r="1.3" fill="#fc0" />;
             })}
           </svg>
           <span className="font-plate text-lg font-bold leading-none">F</span>

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
@@ -6,15 +6,14 @@ import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import Home from './pages/Home';
 
-const GaragePage = lazy(() => import('./pages/GaragePage'));
-const Mecanique = lazy(() => import('./pages/Mecanique'));
-const Vehicules = lazy(() => import('./pages/Vehicules'));
-const VehicleDetail = lazy(() => import('./pages/VehicleDetail'));
-const About = lazy(() => import('./pages/About'));
-const Contact = lazy(() => import('./pages/Contact'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const MentionsLegales = lazy(() => import('./pages/Legal').then((m) => ({ default: m.MentionsLegales })));
-const Confidentialite = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Confidentialite })));
+import GaragePage from './pages/GaragePage';
+import Mecanique from './pages/Mecanique';
+import Vehicules from './pages/Vehicules';
+import VehicleDetail from './pages/VehicleDetail';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
+import { MentionsLegales, Confidentialite } from './pages/Legal';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,7 +28,6 @@ export default function App() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ember-500 focus:px-4 focus:py-2 focus:text-ink-950">Aller au contenu</a>
       <ScrollToTop />
       <Header />
-      <Suspense fallback={<div className="min-h-screen" />}>
         <AnimatePresence mode="wait" initial={false}>
           <PageTransition key={location.pathname}>
             <Routes location={location}>
@@ -46,7 +44,6 @@ export default function App() {
             </Routes>
           </PageTransition>
         </AnimatePresence>
-      </Suspense>
       <Footer />
     </>
   );

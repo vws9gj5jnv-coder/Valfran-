@@ -9,9 +9,10 @@ const KY = 111;
 const SCALE = 3.1; // px par km
 const W = 640, H = 560;
 const cx = W / 2, cy = H / 2 + 10;
+const r1 = (n) => Math.round(n * 10) / 10; // arrondi : évite les écarts flottants Node/navigateur à l'hydratation
 const proj = (p) => ({
-  x: cx + (p.lon - BUSINESS.base.lon) * KX * SCALE,
-  y: cy - (p.lat - BUSINESS.base.lat) * KY * SCALE,
+  x: r1(cx + (p.lon - BUSINESS.base.lon) * KX * SCALE),
+  y: r1(cy - (p.lat - BUSINESS.base.lat) * KY * SCALE),
 });
 
 /** Carte schématique interactive de la zone d'intervention (rayon 75 km autour de Vesoul). */
