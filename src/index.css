@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-ink-950 text-chrome-200 font-sans antialiased;
+    background-image:
+      radial-gradient(1100px 500px at 85% -10%, rgba(79,140,255,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(255,122,41,.06), transparent 60%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 { @apply font-display text-chrome-100 tracking-tight; }
+  ::selection { background: rgba(255,122,41,.35); }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-volt-400 rounded; outline-style: solid; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .section { @apply py-16 sm:py-24; }
+  .eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.18em] text-ember-400; }
+  .h-section { @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.08]; }
+  .lead { @apply text-base sm:text-lg text-chrome-300 leading-relaxed; }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold
+           transition duration-200 active:scale-[.97] disabled:opacity-40 disabled:pointer-events-none select-none;
+  }
+  .btn-primary { @apply btn bg-ember-500 text-ink-950 hover:bg-ember-400 shadow-ember hover:-translate-y-0.5; }
+  .btn-secondary { @apply btn bg-volt-500 text-white hover:bg-volt-400 hover:-translate-y-0.5; }
+  .btn-ghost { @apply btn border border-ink-500 text-chrome-100 hover:border-chrome-400 hover:bg-ink-700; }
+
+  .card { @apply rounded-2xl border border-ink-600 bg-ink-800/80 backdrop-blur; }
+  .card-hover { @apply transition duration-300 hover:-translate-y-1 hover:border-ink-500 hover:shadow-glow; }
+
+  .field {
+    @apply w-full rounded-xl border border-ink-500 bg-ink-900 px-4 py-3 text-sm text-chrome-100
+           placeholder:text-chrome-500 transition focus:border-volt-500 focus:outline-none focus:ring-2 focus:ring-volt-500/30;
+  }
+  .label { @apply mb-1.5 block text-xs font-medium uppercase tracking-wider text-chrome-400; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-ink-500 bg-ink-700 px-3 py-1 text-xs text-chrome-300; }
+
+  .chrome-text {
+    background: linear-gradient(180deg, #fff 0%, #b7bdc8 55%, #6b7383 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .grid-bg {
+    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+}
