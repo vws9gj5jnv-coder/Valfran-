@@ -47,3 +47,17 @@ Le navigateur hydrate ensuite la page (`hydrateRoot`) : l'expérience reste cell
 - Règle à respecter dans les composants : pas de valeur dépendant de `Date`/`Math.random`/`window` au premier rendu
   (sinon erreur d'hydratation) ; arrondir les calculs flottants affichés dans le SVG.
 - `npm run dev` reste un rendu 100 % client (sans pré-rendu).
+
+## Déploiement
+Le plus simple : connecter le dépôt GitHub à l'hébergeur (déploiement automatique à chaque push, aperçu par branche).
+
+| Hébergeur | Procédure |
+|---|---|
+| **Netlify** | *Add new site → Import from Git* → choisir le dépôt. `netlify.toml` fournit tout (commande, dossier, en-têtes, cache). |
+| **Vercel** | *Add New → Project* → choisir le dépôt. `vercel.json` fournit la config ; framework : « Other ». |
+
+Ensuite : ajouter votre domaine dans l'hébergeur et mettre à jour `SITE_URL` (dans `netlify.toml`, ou en variable
+d'environnement Vercel) pour que `canonical` et `sitemap.xml` pointent vers le bon domaine. Une fois en ligne, soumettre
+`https://votre-domaine.fr/sitemap.xml` dans la Google Search Console.
+
+`.github/workflows/ci.yml` construit le site à chaque push/PR et vérifie que le pré-rendu est complet (pages, canonical, 404, sitemap).

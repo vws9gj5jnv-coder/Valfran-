@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          SITE_URL: https://www.valfran-mecanique.fr
+      - name: Vérifier le pré-rendu
+        run: |
+          test -f dist/index.html && test -f dist/404.html && test -f dist/sitemap.xml
+          grep -q "<h1" dist/index.html
+          grep -q "<h1" dist/mecanique/index.html
+          grep -q 'rel="canonical"' dist/contact/index.html
+          test "$(find dist -name index.html | wc -l)" -ge 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+          retention-days: 7
