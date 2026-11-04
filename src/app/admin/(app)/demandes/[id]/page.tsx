@@ -48,9 +48,7 @@ export default async function BookingDetail({ params }: { params: Promise<{ id: 
         back={{ href: '/admin/demandes', label: 'Demandes' }}
         title={`Demande ${b.reference}`}
         intro={<span className="inline-flex flex-wrap items-center gap-2"><BookingBadge status={b.status} /><DemoTag show={b.isDemo} /> Reçue le {dt.format(b.createdAt)}</span>}
-        actions={qs.length === 0 ? (
-          <ActionForm action={createQuoteFromBooking} submitLabel="Créer un devis" submitClass="btn btn-outline-dark btn-sm"><input type="hidden" name="bookingId" value={b.id} /></ActionForm>
-        ) : undefined}
+        actions={<ActionForm action={createQuoteFromBooking} submitLabel={qs.length === 0 ? 'Créer un devis' : 'Nouveau devis'} submitClass="btn btn-outline-dark btn-sm"><input type="hidden" name="bookingId" value={b.id} /></ActionForm>}
       />
       <div className="grid gap-6 xl:grid-cols-[1.35fr_1fr]">
         <div className="space-y-6">

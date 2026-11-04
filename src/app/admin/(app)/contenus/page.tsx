@@ -17,7 +17,6 @@ function Input({ name, label, value, hint, area, rows = 3 }: { name: string; lab
 export default async function ContentAdmin({ searchParams }: { searchParams: Promise<{ onglet?: string }> }) {
   const tab = (await searchParams).onglet ?? 'coordonnees';
   const s = await getSettings();
-  const db = await getDb();
   const b = s.business;
   return (
     <>

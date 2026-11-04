@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import type { MetadataRoute } from 'next';
 import { listServices, listCommunes } from '@/modules/settings/repo';
 import { env } from '@/lib/env';

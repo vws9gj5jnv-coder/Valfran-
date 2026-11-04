@@ -8,7 +8,8 @@ const str = (v: string | undefined, d = '') => (v === undefined || v === '' ? d 
 
 export const env = {
   get isProd() { return process.env.NODE_ENV === 'production'; },
-  get demoMode() { return bool(process.env.DEMO_MODE, true); },
+  /** Par défaut : démonstration uniquement avec la base locale PGlite. Avec DATABASE_URL, il faut DEMO_MODE=true explicitement. */
+  get demoMode() { return bool(process.env.DEMO_MODE, !process.env.DATABASE_URL); },
   get siteUrl() { return str(process.env.SITE_URL, 'http://localhost:3000').replace(/\/$/, ''); },
   get databaseUrl() { return str(process.env.DATABASE_URL); },
   get pgliteDir() { return str(process.env.PGLITE_DIR, '.data/pglite'); },

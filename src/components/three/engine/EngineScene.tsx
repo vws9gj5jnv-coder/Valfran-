@@ -79,7 +79,7 @@ function noiseTexture(size = 128, amp = 0.18) {
   return tex;
 }
 
-function makeMaterials() {
+export function makeMaterials() {
   const grain = noiseTexture();
   const steel = new THREE.MeshPhysicalMaterial({ color: '#8b8f95', metalness: 1, roughness: 0.34, roughnessMap: grain });
   const polished = new THREE.MeshPhysicalMaterial({ color: '#b7babf', metalness: 1, roughness: 0.2, roughnessMap: grain });
@@ -123,7 +123,7 @@ function ghostPart(geo: THREE.BufferGeometry, mats: Mats, threshold = 22) {
 /* ------------------------------------------------------------------ */
 /* Construction du moteur                                              */
 /* ------------------------------------------------------------------ */
-function buildEngine(mats: Mats) {
+export function buildEngine(mats: Mats) {
   const root = new THREE.Group();
   const parts: Record<keyof typeof STEPS, THREE.Group> = Object.fromEntries(Object.keys(STEPS).map((k) => [k, new THREE.Group()])) as never;
   Object.values(parts).forEach((p) => root.add(p));
@@ -306,6 +306,26 @@ function buildEngine(mats: Mats) {
   return { root, parts, crank, fly, pistons, rods, valves, cams, crankPulley, gamma };
 }
 
+
+/** Place toutes les pièces mobiles pour un angle de vilebrequin donné (cinématique exacte). */
+export function poseEngine(engine: ReturnType<typeof buildEngine>, theta: number) {
+  engine.crank.rotation.x = theta;
+  engine.fly.rotation.x = theta;
+  engine.crankPulley.rotation.x = theta;
+  DIM.cylX.forEach((xc, i) => {
+    const k = sliderCrank(theta + DIM.pinPhase[i]);
+    engine.pistons[i].position.set(xc, k.pistonY, 0);
+    engine.rods[i].position.set(xc, k.pinY, k.pinZ);
+    engine.rods[i].rotation.x = k.rodAngle;
+  });
+  const thetaCam = theta / 2;
+  for (const c of engine.cams) c.group.rotation.x = thetaCam;
+  for (const v of engine.valves) {
+    const lift = camRadius(v.lambda + thetaCam - v.side * engine.gamma) - DIM.camBase;
+    v.obj.position.copy(v.base).addScaledVector(v.axis, -lift);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Scène                                                               */
 /* ------------------------------------------------------------------ */
@@ -356,22 +376,7 @@ export function EngineScene({ timeRef, labels, onFirstFrame }: { timeRef: React.
     mats.construction.opacity = lineOpacity;
 
     // Cinématique
-    const theta = crankAngleAt(t);
-    engine.crank.rotation.x = theta;
-    engine.fly.rotation.x = theta;
-    engine.crankPulley.rotation.x = theta;
-    DIM.cylX.forEach((xc, i) => {
-      const k = sliderCrank(theta + DIM.pinPhase[i]);
-      engine.pistons[i].position.set(xc, k.pistonY, 0);
-      engine.rods[i].position.set(xc, k.pinY, k.pinZ);
-      engine.rods[i].rotation.x = k.rodAngle;
-    });
-    const thetaCam = theta / 2;
-    for (const c of engine.cams) c.group.rotation.x = thetaCam;
-    for (const v of engine.valves) {
-      const lift = camRadius(v.lambda + thetaCam - v.side * engine.gamma) - DIM.camBase;
-      v.obj.position.copy(v.base).addScaledVector(v.axis, -lift);
-    }
+    poseEngine(engine, crankAngleAt(t));
 
     // Caméra : travelling lent vers le moteur assemblé, puis légère oscillation
     const zoom = easeInOut(clamp01((t - 0.3) / (T_ASSEMBLED - 0.3)));

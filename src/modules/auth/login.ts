@@ -20,7 +20,7 @@ export async function loginAction(_: LoginState, form: FormData): Promise<LoginS
   const email = String(form.get('email') ?? '').trim().toLowerCase().slice(0, 200);
   const password = String(form.get('password') ?? '').slice(0, 200);
   const ip = clientIp(await headers());
-  const rl = await rateLimit(`login:${fingerprint(ip)}`, 10, 900);
+  const rl = await rateLimit(`login:${fingerprint(ip)}`, Number(process.env.LOGIN_ATTEMPTS_PER_15MIN ?? 10), 900);
   if (!rl.ok) return { error: `Trop de tentatives. Réessayez dans ${Math.ceil(rl.retryAfterSec / 60)} minutes.` };
   if (!email || !password) return { error: 'Saisissez votre e-mail et votre mot de passe.' };
 

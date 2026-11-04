@@ -116,7 +116,10 @@ export function StepVehicle({ draft, update, cfg, errors }: {
                   <p className="mt-1 text-[1.125rem]">{describe(v.identified)}</p>
                   <p className="text-mute">{[v.identified.fuel, v.identified.year].filter(Boolean).join(' · ')}</p>
                   {result?.status === 'found' && result.demo && <p className="mt-2 text-[0.875rem] text-champagne-ink">Résultat simulé (mode démonstration).</p>}
-                  <button type="button" className="mt-3 inline-flex min-h-[44px] items-center font-semibold link-u" onClick={goManual}>Ce n’est pas mon véhicule</button>
+                  <div className="mt-3 flex flex-wrap gap-x-6">
+                    <button type="button" className="inline-flex min-h-[44px] items-center font-semibold link-u" onClick={goManual}>Ce n’est pas mon véhicule</button>
+                    <a href={`/garage-virtuel?categorie=${v.identified.category}&vehicule=${encodeURIComponent(describe(v.identified))}`} className="inline-flex min-h-[44px] items-center text-mute link-u">Explorer dans le garage virtuel (facultatif)</a>
+                  </div>
                 </div>
               </div>
             )}

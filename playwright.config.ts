@@ -28,6 +28,6 @@ export default defineConfig({
         port: PORT,
         timeout: 120_000,
         reuseExistingServer: false,
-        env: { PGLITE_DIR: '.data/e2e', DEMO_MODE: 'true', UPLOAD_DIR: '.data/e2e-uploads', BOOKINGS_PER_HOUR: '200', PLATE_LOOKUPS_PER_HOUR: '200' },
+        env: { PGLITE_DIR: '.data/e2e', DEMO_MODE: 'true', UPLOAD_DIR: '.data/e2e-uploads', BOOKINGS_PER_HOUR: '200', PLATE_LOOKUPS_PER_HOUR: '200', LOGIN_ATTEMPTS_PER_15MIN: '200', DEMO_ADMIN_PASSWORD: 'demo-valfran-2026' },
       },
 });

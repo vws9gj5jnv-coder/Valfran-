@@ -7,11 +7,14 @@ import { listServices } from '@/modules/settings/repo';
 export const metadata = { title: 'Prestation' };
 const ZONES = [['moteur', 'Moteur'], ['batterie', 'Batterie'], ['freinage', 'Freinage'], ['pneumatiques', 'Pneumatiques'], ['suspension', 'Suspension'], ['direction', 'Direction'], ['transmission', 'Transmission'], ['refroidissement', 'Refroidissement']];
 
+function F({ name, label, children, hint }: { name: string; label: string; children: React.ReactNode; hint?: string }) {
+  return <div><label className="field-label" htmlFor={name}>{label}</label>{children}{hint && <p className="field-hint">{hint}</p>}</div>;
+}
+
 export default async function ServiceEdit({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const s = id === 'nouvelle' ? null : (await listServices({ includeInactive: true })).find((x) => x.id === id);
   if (id !== 'nouvelle' && !s) notFound();
-  const F = ({ name, label, children, hint }: { name: string; label: string; children: React.ReactNode; hint?: string }) => (<div><label className="field-label" htmlFor={name}>{label}</label>{children}{hint && <p className="field-hint">{hint}</p>}</div>);
   return (
     <>
       <AdminHeader back={{ href: '/admin/prestations', label: 'Prestations' }} title={s ? s.name : 'Nouvelle prestation'} />

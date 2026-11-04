@@ -75,7 +75,7 @@ test('création d’un devis depuis une demande et export PDF', async ({ page })
   await login(page);
   await page.goto('/admin/demandes?statut=nouvelle');
   await page.locator('tbody a').first().click();
-  await page.getByRole('button', { name: 'Créer un devis' }).click();
+  await page.getByRole('button', { name: /Créer un devis|Nouveau devis/ }).click();
   await expect(page).toHaveURL(/\/admin\/devis\//);
   await page.getByRole('button', { name: 'Pièce' }).click();
   await page.getByLabel('Désignation').last().fill('Filtre à huile (test)');
