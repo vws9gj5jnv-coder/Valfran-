@@ -282,3 +282,14 @@ export const counters = pgTable('counters', {
   key: text('key').primaryKey(),
   value: integer('value').notNull().default(0),
 });
+
+/** Messages du formulaire de contact. */
+export const messages = pgTable('messages', {
+  id: id(),
+  name: text('name').notNull(),
+  phone: text('phone').notNull().default(''),
+  email: text('email').notNull().default(''),
+  body: text('body').notNull(),
+  status: text('status').notNull().default('nouveau'), // nouveau | traite
+  createdAt: createdAt(),
+});
