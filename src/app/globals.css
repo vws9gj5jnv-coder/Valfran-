@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   VALFRAN — système de design
+   Graphite / anthracite / blanc cassé / aluminium, accent champagne occasionnel.
+   ============================================================ */
+@theme {
+  --color-graphite: #111216;
+  --color-graphite-2: #17181c;
+  --color-anthracite: #202226;
+  --color-steel: #2c2f35;
+  --color-paper: #f5f4f0;
+  --color-paper-2: #ebe9e3;
+  --color-alu: #a7a9ad;
+  --color-alu-2: #c9cacd;
+  --color-mute: #55585e;
+  --color-champagne: #b19776;
+  --color-champagne-2: #c8b18f;
+  --color-champagne-ink: #6f5a3f;
+  --color-ok: #3f7d5a;
+  --color-ok-dark: #8fd0a9;
+  --color-warn: #8a5a12;
+  --color-warn-dark: #e9bf75;
+  --color-danger: #a33a2c;
+  --color-danger-dark: #f0a196;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+
+  --ease-precise: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-calm: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --text-display: clamp(2.75rem, 1.7rem + 4.4vw, 5.5rem);
+  --text-display--line-height: 0.98;
+  --text-h1: clamp(2.25rem, 1.5rem + 3.2vw, 4rem);
+  --text-h1--line-height: 1.04;
+  --text-h2: clamp(1.75rem, 1.3rem + 1.9vw, 2.75rem);
+  --text-h2--line-height: 1.1;
+  --text-h3: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-h3--line-height: 1.25;
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-lead--line-height: 1.55;
+}
+
+@layer base {
+  html {
+    font-size: 106.25%; /* 17 px : lisibilité accrue */
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    color-scheme: light;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+  body {
+    @apply bg-paper text-graphite antialiased;
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01' 0, 'tnum' 0;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-champagne); color: var(--color-graphite); }
+  :focus-visible { outline: 3px solid var(--color-champagne); outline-offset: 3px; border-radius: 2px; }
+  .on-dark :focus-visible { outline-color: var(--color-champagne-2); }
+  [hidden] { display: none !important; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12; }
+  .display { font-stretch: 118%; font-weight: 300; letter-spacing: -0.02em; }
+  .wide { font-stretch: 112%; }
+  .eyebrow { @apply text-[0.8125rem] font-medium uppercase tracking-[0.18em]; font-stretch: 110%; }
+  .hairline { border-color: rgb(17 18 22 / 0.12); }
+  .on-dark .hairline, .hairline-dark { border-color: rgb(245 244 240 / 0.12); }
+
+  .btn {
+    @apply inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-sm px-6 text-[1rem] font-semibold tracking-[0.01em] transition-[background-color,color,border-color,transform,box-shadow] duration-200 select-none;
+    transition-timing-function: var(--ease-precise);
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn[aria-disabled='true'], .btn:disabled { @apply cursor-not-allowed opacity-50; }
+  .btn-accent { @apply bg-champagne text-graphite hover:bg-champagne-2; }
+  .btn-dark { @apply bg-graphite text-paper hover:bg-anthracite; }
+  .btn-light { @apply bg-paper text-graphite hover:bg-white; }
+  .btn-outline-dark { @apply border border-graphite/25 text-graphite hover:border-graphite hover:bg-graphite/[0.04]; }
+  .btn-outline-light { @apply border border-paper/30 text-paper hover:border-paper hover:bg-paper/[0.06]; }
+  .btn-ghost { @apply min-h-[44px] px-3 text-graphite/80 hover:text-graphite; }
+  .btn-sm { @apply min-h-[44px] px-4 text-[0.9375rem]; }
+
+  .link-u { @apply underline decoration-current/30 underline-offset-[5px] transition-colors hover:decoration-current; }
+
+  .field-label { @apply mb-2 block text-[1rem] font-semibold text-graphite; }
+  .field-hint { @apply mt-1.5 text-[0.9375rem] text-mute; }
+  .field-error { @apply mt-2 flex items-start gap-2 text-[0.9375rem] font-medium text-danger; }
+  .input {
+    @apply block min-h-[54px] w-full rounded-sm border border-graphite/25 bg-white px-4 text-[1.0625rem] text-graphite placeholder:text-graphite/40 transition-[border-color,box-shadow] duration-150;
+  }
+  .input:hover { @apply border-graphite/45; }
+  .input:focus { @apply border-graphite outline-none; box-shadow: 0 0 0 3px rgb(177 151 118 / 0.45); }
+  .input[aria-invalid='true'] { @apply border-danger; }
+  textarea.input { @apply min-h-[120px] py-3 leading-relaxed; }
+  select.input { @apply appearance-none bg-no-repeat pr-11; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23111216' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-position: right 1rem center; }
+
+  .card { @apply rounded-sm border border-graphite/10 bg-white; }
+  .badge { @apply inline-flex items-center gap-1.5 rounded-xs px-2 py-0.5 text-[0.8125rem] font-semibold; }
+
+  /* Apparition progressive : n'est masqué que par JavaScript, et seulement sous la ligne de flottaison. */
+  .reveal-pending { opacity: 0; transform: translateY(14px); }
+  .reveal-pending.is-in { opacity: 1; transform: none; transition: opacity 0.9s var(--ease-precise), transform 0.9s var(--ease-precise); }
+
+  .step-enter { animation: step-in 0.45s var(--ease-precise) both; }
+  @keyframes step-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+
+  .grid-lines {
+    background-image: linear-gradient(to right, rgb(245 244 240 / 0.045) 1px, transparent 1px), linear-gradient(to bottom, rgb(245 244 240 / 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+  .prose-vf p { @apply mb-4; }
+  .prose-vf h2 { @apply mb-3 mt-10 text-h3 font-semibold; }
+  .prose-vf ul { @apply mb-4 list-disc pl-6; }
+  .prose-vf a { @apply underline decoration-current/30 underline-offset-[5px] hover:decoration-current; }
+}
