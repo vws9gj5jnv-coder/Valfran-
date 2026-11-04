@@ -34,12 +34,12 @@ export function PageHero({ eyebrow, title, intro, children }: { eyebrow?: string
 
 export function Breadcrumbs({ items }: { items: { href?: string; label: string }[] }) {
   return (
-    <nav aria-label="Fil d’Ariane" className="mb-6 text-[0.9375rem] text-paper/60">
+    <nav aria-label="Fil d’Ariane" className="mb-2 text-[0.9375rem] text-mute">
       <ol className="flex flex-wrap items-center gap-2">
         {items.map((it, i) => (
           <li key={i} className="flex items-center gap-2">
             {i > 0 && <span aria-hidden="true">/</span>}
-            {it.href ? <a href={it.href} className="hover:text-paper">{it.label}</a> : <span aria-current="page" className="text-paper/85">{it.label}</span>}
+            {it.href ? <a href={it.href} className="hover:text-graphite">{it.label}</a> : <span aria-current="page" className="text-graphite">{it.label}</span>}
           </li>
         ))}
       </ol>
